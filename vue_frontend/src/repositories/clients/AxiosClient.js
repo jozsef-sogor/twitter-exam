@@ -1,7 +1,8 @@
 import axios from "axios";
 
 //const baseDomain = "https://sogor98.eu.pythonanywhere.com/";
-const baseDomain = "http://localhost:3333";
+//const baseDomain = "http://localhost:3333";
+const baseDomain = "http://127.0.0.1:3333";
 const baseURL = `${baseDomain}`; // Incase of /api/v1;
 axios.defaults.withCredentials = true
 

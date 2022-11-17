@@ -1,6 +1,7 @@
 from uuid import uuid4
 from g import _USERS, _SESSIONS, _FOLLOWS, _TWEETS, IMG_BASE_URL
 from helpers.function_helpers import create_error_dict
+from .database import Database
 
 class User:
     def __init__(self, user_name, user_first_name, user_last_name, user_email, user_password, id = None, access_level = 100, user_image = "/assets/img/default-profile-image.jpeg"):
@@ -16,6 +17,9 @@ class User:
     def create_user(self):
         user_obj = self.__dict__
         _USERS.append(user_obj)
+        db = Database()
+        db.execute("CREATE TABLE test(test int)")
+
 
     def delete_user(self):
         del _USERS[self]
