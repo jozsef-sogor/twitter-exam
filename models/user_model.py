@@ -17,9 +17,18 @@ class User:
     def create_user(self):
         user_obj = self.__dict__
         _USERS.append(user_obj)
+        #add user object to the user table in the database
         db = Database()
-        db.execute("CREATE TABLE test(test int)")
-
+        #Crating a new user table
+        db.execute("CREATE TABLE IF NOT EXISTS user ( ID int NOT NULL AUTO_INCREMENT, user_name varchar(255) NOT NULL, user_first_name varchar(255), user_last_name varchar(255), user_email varchar(255), user_password varchar(255), access_level varchar(255), user_image varchar(255), CONSTRAINT PK_user PRIMARY KEY (ID,user_email) )")
+        if(db):
+            print("user table is created successfully........")
+        # #If db exist then insert user data into user table
+        db.execute("INSERT INTO user (user_name, user_first_name, user_last_name, user_email, user_password, access_level, user_image) VALUES ( %s, %s, %s, %s, %s, %s, %s)", (self.user_name, self.user_first_name, self.user_last_name, self.user_email, self.user_password, self.access_level, self.user_image))    
+        db.commit()
+        db.close()
+        return user_obj
+        
 
     def delete_user(self):
         del _USERS[self]

@@ -23,3 +23,5 @@ to start developing:
 ```bash
 npm run serve
 ```
+
+Exam project
