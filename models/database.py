@@ -1,10 +1,10 @@
-import pymysql
+import psycopg2 
 from g import DB_HOST, DB_NAME, DB_USER, DB_PASSWORD
 
 
 class Database:
     def __init__(self):
-        self._conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_NAME)
+        self._conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASSWORD, host=DB_HOST)
         self._cursor = self._conn.cursor()
 
     def __enter__(self):

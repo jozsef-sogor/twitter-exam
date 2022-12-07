@@ -4,10 +4,10 @@ IMG_BASE_URL = "http://127.0.0.1:3333/"
 JWT_SECRET = "c9fb2625-1779-42ff-a776-3916ed7db682"
 PASSWORD_RESET_EXPIRY_TIME_SECONDS = 900 #15 minutes
 SESSION_COOKIE_MAX_AGE_SECONDS = 3600 * 24 * 3 #3 days
-DB_HOST = "localhost"
-DB_NAME = "web-sec"
+DB_HOST = "dpg-ce858m4gqg4cang42pe0-a.frankfurt-postgres.render.com"
+DB_NAME = "twitter_51do"
 DB_USER = "root"
-DB_PASSWORD = "GFG 73tus"
+DB_PASSWORD = "rxsCrwl2jb1wZHa2xAyX5gmXi2RWiSRY"
 
 ##############################
 _USERS = [

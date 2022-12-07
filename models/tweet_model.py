@@ -1,6 +1,7 @@
 from uuid import uuid4
 import time
 from g import _TWEETS, IMG_BASE_URL
+from .database import Database
 
 class Tweet:
     def __init__(self, tweet_creator_id, tweet_content, id=None, tweet_image_url = None, created_at=None, updated_at=None):
@@ -13,13 +14,30 @@ class Tweet:
 
     def create_tweet(self):
         tweet_obj = self.__dict__
-        _TWEETS.append(tweet_obj)
+        _TWEETS.append(tweet_obj) #add tweet to an in memory list
+        ##add tweet to db
+        db = Database()
+        #creating a new tweet user table 
+        db.execute("CREATE TABLE IF NOT EXISTS tweets (id VARCHAR(255) PRIMARY KEY, tweet_content VARCHAR(255), tweet_image_url VARCHAR(255), tweet_creator_id VARCHAR(255), created_at VARCHAR(255), updated_at VARCHAR(255))")
+        if(db):
+            print("tweet table is created successfully........")
+        #If db exist then insert tweet data into tweets table
+        db.execute("INSERT INTO tweets (id, tweet_content, tweet_image_url, tweet_creator_id, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s)", (self.id, self.tweet_content, self.tweet_image_url, self.tweet_creator_id, self.created_at, self.updated_at))
+        db.commit()
+        db.close()
+        return tweet_obj
 
     def delete_tweet(self):
         for tweet in range(len(_TWEETS)):
             if _TWEETS[tweet]['id'] == self.id:
                 del _TWEETS[tweet]
                 break
+
+        db = Database()
+        db.execute("DELETE FROM tweets WHERE id = %s", (self.id,)) 
+        db.commit()
+        db.close()
+        return "Tweet deleted successfully"
 
     def update_tweet(self, new_content):
         tweet_and_index = [(index, tweet) for index, tweet in enumerate(_TWEETS) if tweet["id"] == self.id]
