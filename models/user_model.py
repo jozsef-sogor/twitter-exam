@@ -32,7 +32,7 @@ class User:
         
 
     def delete_user(self):
-        del _USERS[self]
+        del _USERS[self] #delete user from in memory list
 
     def update_user(self, new_user):
         user_and_index = [(index, user) for index, user in enumerate(_USERS) if user["id"] == self.id]
@@ -47,7 +47,7 @@ class User:
 
     def add_to_session(self):
         session_id = str(uuid4())
-        _SESSIONS[session_id] = self.id
+        _SESSIONS[session_id] = self.id #add session to in memory list
         return session_id
 
     def get_client_user(self):
