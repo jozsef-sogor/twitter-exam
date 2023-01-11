@@ -11,7 +11,7 @@ import json
 @get("/users")
 def _():
     try:
-        users = User.get_all_client_users()
+        users = User.get_all_users()
     except Exception as e:
         error = create_error_dict(400, str(e))
         response.status = 400
@@ -36,7 +36,8 @@ def _(user_id):
 ############################################################
 @get("/users/<user_id>/tweets")
 def _(user_id):
-    user = User.from_user_id(user_id)
+    user = User
+    user.from_user_id(user_id)
     if user:
         tweets = user.get_tweets()
         response.status = 200

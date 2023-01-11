@@ -21,18 +21,13 @@ class Tweet:
         db.execute("CREATE TABLE IF NOT EXISTS tweets (id VARCHAR(255) PRIMARY KEY, tweet_content VARCHAR(255), tweet_image_url VARCHAR(255), tweet_creator_id VARCHAR(255), created_at VARCHAR(255), updated_at VARCHAR(255))")
         if(db):
             print("tweet table is created successfully........")
-        #If db exist then insert tweet data into tweets table
+        #If db exist then insert tweet data into tweets table TODO:(Vulnerable to SQL injection)
         db.execute("INSERT INTO tweets (id, tweet_content, tweet_image_url, tweet_creator_id, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s)", (self.id, self.tweet_content, self.tweet_image_url, self.tweet_creator_id, self.created_at, self.updated_at))
         db.commit()
         db.close()
         return tweet_obj
 
     def delete_tweet(self):
-        for tweet in range(len(_TWEETS)):
-            if _TWEETS[tweet]['id'] == self.id:
-                del _TWEETS[tweet]
-                break
-
         db = Database()
         db.execute("DELETE FROM tweets WHERE id = %s", (self.id,)) 
         db.commit()
@@ -40,32 +35,40 @@ class Tweet:
         return "Tweet deleted successfully"
 
     def update_tweet(self, new_content):
-        tweet_and_index = [(index, tweet) for index, tweet in enumerate(_TWEETS) if tweet["id"] == self.id]
-        if tweet_and_index:
-            index = tweet_and_index[0][0]
-            new_tweet = tweet_and_index[0][1]
-            new_tweet["tweet_content"] = new_content
-            _TWEETS[index] = new_tweet
-            return new_tweet
+        #Update tweet in db
+        db = Database()
+        if new_content:
+            db.execute("UPDATE tweets SET tweet_content = %s WHERE id = %s", (new_content, self.id))
+            db.commit()
+            db.close()
+            return new_content
         else:
-            raise Exception("Tweet could not be updated. Try again later")
+            raise Exception("Tweet could not be updated. Try again later")    
         
 
     @classmethod
     def get_tweet_by_id(cls, tweet_id):
-        tweet = [tweet for tweet in _TWEETS if tweet["id"] == tweet_id]
-        if tweet:
-            return cls(**tweet[0])
-        else:
-            return None
-        #return cls(**tweet)
+        #Get tweet from db
+        db = Database()
+        db.execute("SELECT * FROM tweets WHERE id = %s", (tweet_id,))
+        tweet = db.fetchone()
+        db.close()
+        return tweet
 
     @classmethod
     def get_tweets_by_user_id(cls, user_id):
-        tweets = [cls(t**weet) for tweet in _TWEETS if tweet["author_id"] == user_id]
+        #Get tweets from db
+        db = Database()
+        db.execute("SELECT * FROM tweets WHERE tweet_creator_id = %s", (user_id,))
+        tweets = db.fetchall()
+        db.close()
         return tweets
 
     @staticmethod
     def get_all_tweets():
-        tweets = _TWEETS
+        #Get all tweets from db
+        db = Database()
+        db.execute("SELECT * FROM tweets")
+        tweets = db.fetchall()
+        db.close()
         return tweets
