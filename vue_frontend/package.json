@@ -12,6 +12,8 @@
     "@formkit/vue": "^1.0.0-beta.6",
     "@kyvg/vue3-notification": "^2.3.4",
     "axios": "^0.26.1",
+    "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.1.1",
     "pinia": "^2.0.13",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14"

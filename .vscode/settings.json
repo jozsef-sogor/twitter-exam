@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "dpg-ce858m4gqg4cang42pe0-a.frankfurt-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "web-sec",
+            "database": "twitter_51do",
+            "username": "root",
+            "password": "rxsCrwl2jb1wZHa2xAyX5gmXi2RWiSRY"
+        }
+    ]
+}

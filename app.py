@@ -63,4 +63,9 @@ except:
     app = app()
     app.install(EnableCors())
     
+    #Enable cors for production and local development  
+    app.install(cors_plugin(origins="*"))
+    
+
+
     run(host="127.0.0.1", port="3333", debug="True", reloader="True")

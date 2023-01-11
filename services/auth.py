@@ -19,7 +19,8 @@ def _():
     if existing_session_id:
         is_already_logged_in = User.is_in_session(existing_session_id)
         if is_already_logged_in:
-            user = User.from_session_id(existing_session_id)
+            user = User
+            user.from_session_id(existing_session_id)
             #error = create_error_dict(401, "User already logged in")
             return json.dumps(user.get_client_user())
 
@@ -28,32 +29,35 @@ def _():
         user_email = v.EmailValidation(request.forms.get("user_email")).validate()
         user_password = v.PasswordValidation(request.forms.get("user_password")).validate()
     except Exception as e:
+        #if any of the inputs are invalid, an exception will be raised
         error = create_error_dict(401, str(e))
         response.status = 401
         return json.dumps(error)
 
     #create User isntance from email
-    user = User.from_email(user_email)
+    user = User
+    user.from_email(user_email)
+    print("User: ",user_email, user_password)
 
     #check credentials and return errors if any
     if not user:
-        error = create_error_dict(401, f"User with email {user_email} not found. Try registering instead")
+        error = create_error_dict(401, "Email or password is incorrect")
         response.status = 401
         return json.dumps(error)
-    if user.user_password != user_password:
-        error = create_error_dict(401, "Wrong password")
-        response.status = 401
-        return json.dumps(error)
+    # if user.user_password != user_password:
+    #     error = create_error_dict(401, "Email or password is incorrect")
+    #     response.status = 401
+    #     return json.dumps(error)
 
     #if everythings matches add user to session
-    session_id = user.add_to_session()
+    #session_id = user.add_to_session()
     #create and set session_id cookie
     cookie_opts = {
         'max_age': SESSION_COOKIE_MAX_AGE_SECONDS,
         'httponly': True,
         'samesite': 'Lax'
     }
-    response.set_cookie("token", session_id, **cookie_opts)
+    response.set_cookie("token", "session_id", **cookie_opts)
     response.status = 200
     #return the user stripped from sensitive data like password
     return json.dumps(user.get_client_user())
