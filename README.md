@@ -25,3 +25,5 @@ npm run serve
 ```
 
 Exam project
+
+follow this for db: https://pypi.org/project/postgresql-orm/
